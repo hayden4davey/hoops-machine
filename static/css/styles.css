@@ -1,0 +1,29 @@
+
+body {
+	background: #e9ecef;
+	font-family: 'Righteous', sans-serif !important;
+}
+
+.navbar-brand {
+	color: #ffffff !important;
+	background-color: #BA0C2F;
+	border-radius: 100px;
+	font-size: 30px;
+	padding: 12px;
+}
+
+.navbar {
+	padding-left:1.25rem;
+	padding-right: 1.25rem;
+	
+}
+
+.card {
+	margin: 1.25rem;
+}
+
+.img-fade {
+	margin: .1rem;
+}
+
+
