@@ -3,55 +3,306 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Predicting Basketball Positions with Machine Learning</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-  <link rel="stylesheet" href="static/css/styles.css">
-
-  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Righteous" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"> 
+  <title>Machine Learning about Basketball Positions</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 
-
 <body>
-
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="index.html"><strong>Hoops Machine</strong></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-      <ul class="navbar-nav">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Models
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="svc.html">SVC</a>
-            <a class="dropdown-item" href="kmeans.html">K Means</a>
-			      <a class="dropdown-item" href="neuralnetwork.html">Neural Network</a>
-          </div>
-        </li>
-		<li class="nav-item">
-          <a class="nav-link" href="data.html">Data</a>
-        </li>
+  <div class="container-fluid">
+    <div class="jumbotron text-center">
+      <h1>What Can Machine Learning Tell Us About Basketball?</h1>
     </div>
-  </nav>
-
-<div class="row">
-  <div class="col-md-12">
-    <div class="card main-card">
-      <div class="card-body">
-        <h5 class="card-title"><strong>Predicting Basketball Positions with Machine Learning</strong></h5>
-		<hr>
-        <p class="card-text">The purpose of this project was to . . . 
-		</p>
-    <img class="img-responsive" src="assets/theshot.jpg">
-      </div>
-    </div>
+	<div class="row">
+	  <div class="col-md-12">
+		<div class="card main-card">
+		  <div class="card-body">
+			<h4 class="card-title"><strong>Starting Point</strong></h4>
+			<hr>
+			<p class="card-text"> {{ intro_paragraph }}
+			</p>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	<div class="row">
+	  <div class="col-md-12">
+		<div class="card main-card">
+		  <div class="card-body">
+			<h4 class="card-title"><strong>Data and Data Cleaning</strong></h4>
+			<hr>
+			<p class="card-text"> 
+        This dataset was retrieved from a <a href="https://www.kaggle.com/drgilermo/nba-players-stats">user</a> on Kaggle.com.  
+        The user scraped data from <a href="https://www.basketball-reference.com/">Basketball Reference</a> and compiled it into CSV files.  
+        The sataset compiles 67 seasons of NBA player statistics in over 50 different stats, from basic box score figures (points, assists, etc.) to advanced stats (player effiency rating, value over replacement, etc.).  
+        <br><br>
+        The data cleaning process revealed a high number of void cells, though no duplicates.  
+        First, I dropped any columns that were not necessary for this application and also renamed certain columns for consistency.
+        I also dropped a handful of less signficant statistical categories to keep the dataset a little more manageable.  
+        I also restricted the dataset to begin in 1979 (introduction of the three-point line) as there are significantly more consistent records in the modern era, as well as more statistical categories.
+        These restrictions significantly lowered the number of void cells, the remaining of which were replaced with zeroes.  
+        The dataset gave season totals for a number of stats, which I converted to per-game stats.  
+        I dropped back up positions listed in order to limit the positions to the original five starting position for basketball:
+        <ol>
+          <li>Point Guard</li>
+          <li>Shooting Guard</li>
+          <li>Small Forward</li>
+          <li>Power Forward</li>
+          <li>Center</li>
+        </ol>
+        Finally, I merged the statistical data with some player info for context, yielding a dataset of 43 columns and over 19 thousand rows.  
+        Here are the categories analyzed:
+        </p>
+        <ul>
+          <li>Year</li>
+          <li>Player</li>
+          <li>Position</li>
+          <li>Age</li>
+          <li>Height</li>
+          <li>Weight</li>
+          <li>Team</li>
+          <li>Games played</li>
+          <li>Minutes played per game</li>
+          <li>Points per game</li>
+          <li>Assists per game</li>
+          <li>Rebounds per game</li>
+          <li>Offensive rebounds per game</li>
+          <li>Defensive rebounds per game</li>
+          <li>Steals per game</li>
+          <li>Blocks per game</li>
+          <li>Turnovers per game</li>
+          <li>Personal fouls per game</li>
+          <li>Player efficiency rating</li>
+          <li>Value over replacment</li>
+          <li>Box plus-minus</li>
+          <li>True shooting percentage</li>
+          <li>Effective field goal percentage</li>
+          <li>Usage rate</li>
+          <li>Assist percentage</li>
+          <li>Rebounding percentage</li>
+          <li>Offensive rebounding percentage</li>
+          <li>Defensive rebounding percentage</li>
+          <li>Steals percentage</li>
+          <li>Blocks percentage</li>
+          <li>Turnover percentage</li>
+          <li>Field goals per game</li>
+          <li>Field goal attempts per game</li>
+          <li>Field goal percentage</li>
+          <li>Three-point shots made per game</li>
+          <li>Three-point attempts per game</li>
+          <li>Three-point shooting percentage</li>
+          <li>Two-point shots made per game</li>
+          <li>Two-point attempts per game</li>
+          <li>Two-point shooting percentage</li>
+          <li>Free throws made per game</li>
+          <li>Free throw attempts per game</li>
+          <li>Free throw percentage</li>
+        </ul>
+        Check out this <a href="https://www.basketball-reference.com/about/glossary.html">glossary</a> for more information on these statistical categories.
+			</p>
+		  </div>
+		</div>
+	  </div>
   </div>
+  <div class="row">
+	  <div class="col-md-12">
+		<div class="card main-card">
+		  <div class="card-body">
+			<h4 class="card-title"><strong>First Models: SVC</strong></h4>
+			<hr>
+			<p class="card-text"> {{ svc_paragraph1 }}
+      </p>
+      <table style="width:40%">
+        <tr>
+          <th></th>
+          <th>Precision</th>
+          <th>Recall</th>
+          <th>F-1 Score</th>
+          <th>Support</th>
+        </tr>
+        <tr>
+          <td>PG</td>
+          <td>0.86</td>
+          <td>0.87</td>
+          <td>0.86</td>
+          <td>969</td>
+        </tr>
+        <tr>
+          <td>SG</td>
+          <td>0.67</td>
+          <td>0.66</td>
+          <td>0.67</td>
+          <td>969</td>
+        </tr>
+        <tr>
+          <td>SF</td>
+          <td>0.62</td>
+          <td>0.65</td>
+          <td>0.63</td>
+          <td>917</td>
+        </tr>
+        <tr>
+          <td>PF</td>
+          <td>0.63</td>
+          <td>0.62</td>
+          <td>0.63</td>
+          <td>978</td>
+        </tr>
+        <tr>
+          <td>C</td>
+          <td>0.77</td>
+          <td>0.75</td>
+          <td>0.76</td>
+          <td>978</td>
+        </tr>
+        <tr>
+          <td>Accuracy</td>
+          <td></td>
+          <td></td>
+          <td>0.71</td>
+          <td>4817</td>
+        </tr>
+        <tr>
+          <td>Macro Average</td>
+          <td>0.71</td>
+          <td>0.71</td>
+          <td>0.71</td>
+          <td>4817</td>
+        </tr>
+        <tr>
+          <td>Weighted Average</td>
+          <td>0.71</td>
+          <td>0.71</td>
+          <td>0.71</td>
+          <td>4817</td>
+        </tr>
+      </table>
+      <hr>
+      <p class="card-text"> {{ svc_paragraph2 }}
+      </p>
+      <table style="width:40%">
+        <tr>
+          <th></th>
+          <th>Precision</th>
+          <th>Recall</th>
+          <th>F-1 Score</th>
+          <th>Support</th>
+        </tr>
+        <tr>
+          <td>PG</td>
+          <td>0.83</td>
+          <td>0.86</td>
+          <td>0.84</td>
+          <td>969</td>
+        </tr>
+        <tr>
+          <td>SG</td>
+          <td>0.64</td>
+          <td>0.61</td>
+          <td>0.63</td>
+          <td>969</td>
+        </tr>
+        <tr>
+          <td>SF</td>
+          <td>0.59</td>
+          <td>0.60</td>
+          <td>0.59</td>
+          <td>917</td>
+        </tr>
+        <tr>
+          <td>PF</td>
+          <td>0.56</td>
+          <td>0.54</td>
+          <td>0.55</td>
+          <td>978</td>
+        </tr>
+        <tr>
+          <td>C</td>
+          <td>0.68</td>
+          <td>0.71</td>
+          <td>0.69</td>
+          <td>978</td>
+        </tr>
+        <tr>
+          <td>Accuracy</td>
+          <td></td>
+          <td></td>
+          <td>0.66</td>
+          <td>4817</td>
+        </tr>
+        <tr>
+          <td>Macro Average</td>
+          <td>0.66</td>
+          <td>0.66</td>
+          <td>0.66</td>
+          <td>4817</td>
+        </tr>
+        <tr>
+          <td>Weighted Average</td>
+          <td>0.66</td>
+          <td>0.66</td>
+          <td>0.66</td>
+          <td>4817</td>
+        </tr>
+      </table>
+      <hr>
+      <p class="card-text"> {{ svc_paragraph2 }}
+      </p>
+      <table style="width:40%">
+        <tr>
+          <th></th>
+          <th>Precision</th>
+          <th>Recall</th>
+          <th>F-1 Score</th>
+          <th>Support</th>
+        </tr>
+        <tr>
+          <td>Guards</td>
+          <td>0.90</td>
+          <td>0.89</td>
+          <td>0.89</td>
+          <td>1938</td>
+        </tr>
+        <tr>
+          <td>Forwards</td>
+          <td>0.77</td>
+          <td>0.81</td>
+          <td>0.79</td>
+          <td>1901</td>
+        </tr>
+        <tr>
+          <td>Centers</td>
+          <td>0.81</td>
+          <td>0.76</td>
+          <td>0.78</td>
+          <td>978</td>
+        </tr>
+        <tr>
+          <td>Accuracy</td>
+          <td></td>
+          <td></td>
+          <td>0.83</td>
+          <td>4817</td>
+        </tr>
+        <tr>
+          <td>Macro Average</td>
+          <td>0.83</td>
+          <td>0.82</td>
+          <td>0.82</td>
+          <td>4817</td>
+        </tr>
+        <tr>
+          <td>Weighted Average</td>
+          <td>0.83</td>
+          <td>0.83</td>
+          <td>0.83</td>
+          <td>4817</td>
+        </tr>
+      </table>
+		  </div>
+		</div>
+	  </div>
+	</div>
 </div>
+</body>
