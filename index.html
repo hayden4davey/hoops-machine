@@ -25,7 +25,7 @@
         There are traditionally five positions and while starting line ups are listed according to these and the dataset used here includes them for every player, there is a view that this is kind of an outdated way of categorizing players.
         With the league's more recent emphasis on passing, it may be the case that basketball is evolving to a positionless style.  
         There is also the notion that there are basically three types of players: playmakers, wings and bigs.
-        So, the goal here was to see if machine learning could accurately predict players position from their statistics and if it could shed some light on other elements of basketball.
+        So, the goal here was to see if machine learning could accurately predict players position from their statistics and maybe see if it could shed some light on other elements of basketball.
 			</p>
       </div>
       <br><br>
@@ -57,6 +57,8 @@
           <li>Power Forward</li>
           <li>Center</li>
         </ol>
+        <img class="img-responsive" src="static/images/positions.gif">
+        <hr>
         Finally, I merged the statistical data with some player info for context, yielding a dataset of 43 columns and over 19 thousand rows.  
         Here are the categories analyzed:
         </p>
@@ -190,8 +192,10 @@
       <hr>
       <p class="card-text">Point guards were the most accurately predicted position at 86% with centers trailing with 77%.
         One reason the algorithm was most successful with point guards (position 1) may their role in facilitating plays as evidenced by their typically high number of assists per game and assist rate.
+        Blocks appeared to be one of the biggest contributing features for centers.
       </p>
       <img class="img-responsive" src="static/images/AstVis.png">
+      <img class="img-responsive" src="static/images/BlkVis.png">
       <hr>
       <p class="card-text">I took some suggestions to apply standard scaling to the data since as shooting percentage of 0.5 would be weighted much less heavily than a total points per game of 25.
         I also converted the years to weight more recent stats more heavily since the game has evolved.  Games in 1979 were given a value of 1 and each subsequent year an increasing value by 1.
@@ -339,13 +343,14 @@
 			<h4 class="card-title"><strong>Improved Accuracy with Neural Networks</strong></h4>
 			<hr>
 			<p class="card-text"> 
-        I found significantly improved accuracy by developing neural networks to predict each individual position.  
+        I found significantly improved accuracy by developing neural networks with TensorFlow to predict each individual position.  
         The neural networks contain five layers of 100, 100, 100, 100 and 2 neuron units and were trained for 100 epochs.  
         Sparse categorical cross entropy was the loss function.  The same pattern as appears as in my previous models, except with much higher accuracy overall.
         Point guards were the highest 94% accuracy on the test data.  Centers also broke into the 90s range, while the wing players hovered in the high 80s.  
         I think this lends a little credibility to the traditional five positional understanding of basketball.
         But since there is lower accuracy in mid-size players, this finding could also be interpreted with the view that there are three main player types: playmakers, wings and bigs.
         Also, it is possible that more recent players are the ones the model is missing.
+        If I was to continue this project, I think I would try using a non-randomized split of the data and see how the model works on the most recent stats.
       </p>
       <table style="width:40%">
         <tr>
@@ -392,7 +397,7 @@
 			<h4 class="card-title"><strong>Clustering with K Means</strong></h4>
 			<hr>
 			<p class="card-text"> 
-       The last couple models I produced used K means to create clusters.  The data was scaled with standard scaler and the assigned a k-value of 5 for the initial model.
+       The last couple models I produced used K Means Mini Batch to create clusters.  The data was scaled with standard scaler and the assigned a k-value of 5 for the initial model.
        I was interested to see if it would classify players according to the traditional five positions of basketball.  And it did not.  
        Instead of clustering the data into five roughly equivalent group of around 4000 member, it broke the data down into groups of varying sizes from just over 1000 to over 6000.
        And when you consider the number of statistical categories used, this makes a lot of sense.  Instead, the clustering algorithms seemed to classify players by their ability.  
@@ -403,9 +408,15 @@
       <img class="img-responsive" src="static/images/PERVis.png">
       <hr>
       <p class="card-text"> 
-        Their teams typically also score fewer points than they allow when cluster 3 players are on the floor.  The same trend occured when I reduced the K-value to 3.
+        Their teams also typically also score fewer points than they allow when cluster 3 players are on the floor.
       </p>
       <img class="img-responsive" src="static/images/BPMVis.png">
+      <hr>
+      However, there seems to be some ambiguity between some of the other clusters, such as 1 and 2.  
+      And an analysis of the K Means score revealed the ideal K-value is probably closer to 2.
+      I ran a new model with a K-value of 3 and it revealed greater stratification of the clusters by player ability and value.  
+      I initially removed the column for games started because it contained a lot of voids, but if I were to continue this project, I think it might be interesting to see if the K Means algorithm is clustering starters together for example.
+      <img class="img-responsive" src="static/images/BPM2Vis.png">
       <hr>
       </div>
 		</div>
